@@ -30,11 +30,15 @@ function Game(){
 
   const moves = history.map((squares,move) =>{
 
-    let description;
-    if (move > 0) {
-      description = 'Ir al movimiento #' + move;
-    } else {
-      description = 'Ir al movimiento al inicio del juego';
+    let description = move > 0 ? 'Ir al movimiento #' + move : 'Ir al movimiento al inicio del juego';
+    
+    if (move === history.length -1){
+      description = 'Estas en el movimiento #' + move;
+      return (
+        <li key={move}>
+          <span>{description}</span>
+        </li>
+      )
     }
 
     return (
