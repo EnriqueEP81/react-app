@@ -34,8 +34,6 @@ function Game(){
     setIsasc(!isAsc);
   }
 
-  //const orderHistory = isAsc ? history : [...history].reverse();
-
   const moves = history.map((squares,i) =>{
 
     const move = isAsc ? i : history.length -1 -i;
