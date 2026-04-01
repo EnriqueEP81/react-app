@@ -19,39 +19,17 @@ export function Board({xIsNext, squares, onPlay}) {
   const winner = calculateWinner(squares);
   let status;
   if (winner) {
-    status = "Winner: " + winner;
+    status = "Winner: " + winner.winner;
   } else {
     status = "Next player: " + (xIsNext ? "X" : "O");
   }
   return(
-    <Squares2 status={status} squares={squares} handleClick={handleClick}/>
+    <Squares status={status} squares={squares} handleClick={handleClick} winner={winner}/>
   );
 }
 
-function Squares({status,squares,handleClick}) {
-    return(
-    <>
-      <div className="status">{status}</div>
-      <div className="board-row">
-        <Square value = {squares[0]} onSquareClick={() => handleClick(0)}/>
-        <Square value = {squares[1]} onSquareClick={() => handleClick(1)}/>
-        <Square value = {squares[2]} onSquareClick={() => handleClick(2)}/>
-      </div>
-      <div className="board-row">
-        <Square value = {squares[3]} onSquareClick={() => handleClick(3)}/>
-        <Square value = {squares[4]} onSquareClick={() => handleClick(4)}/>
-        <Square value = {squares[5]} onSquareClick={() => handleClick(5)}/>
-      </div>
-      <div className="board-row">
-        <Square value = {squares[6]} onSquareClick={() => handleClick(6)}/>
-        <Square value = {squares[7]} onSquareClick={() => handleClick(7)}/>
-        <Square value = {squares[8]} onSquareClick={() => handleClick(8)}/>
-      </div>
-    </>
-  )
-}
 
-function Squares2({status,squares,handleClick}) {
+function Squares({status,squares,handleClick,winner}) {
     const boardRows = [];
 
     for (let row = 0; row < 3; row++ ) {
@@ -59,8 +37,9 @@ function Squares2({status,squares,handleClick}) {
 
         for (let col = 0; col < 3; col++) {
             let index = row * 3 + col;
+            const isWinning = winner?.line?.includes(index);
             squaresInRow.push(
-                <Square key={index} value = {squares[index]} onSquareClick={() => handleClick(index)}/> 
+                <Square key={index} value = {squares[index]} onSquareClick={() => handleClick(index)} isWinning ={isWinning}/> 
             );
         }
         boardRows.push(
@@ -77,11 +56,11 @@ function Squares2({status,squares,handleClick}) {
 }
 
 
-function Square({value, onSquareClick}){
+function Square({value, onSquareClick, isWinning}){
 
   return(
     <button 
-      className="square"
+      className={isWinning? "square winner":"square"}
       onClick={onSquareClick}
     >
     {value}
