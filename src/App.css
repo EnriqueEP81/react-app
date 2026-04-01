@@ -182,3 +182,25 @@
     border-right-color: var(--border);
   }
 }
+
+
+.app-container {
+  display: flex;
+}
+
+.sidebar {
+  width: 200px;
+  border-right: 1px solid gray;
+  padding: 10px;  
+}
+
+.sidebar button {
+  display: block;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+}
