@@ -2,6 +2,7 @@
 import './styles.css';
 import { useState } from 'react';
 import { Board } from "./Board";
+import { findChangedCoord } from './utils';
 
 
 function App() {
@@ -38,16 +39,25 @@ function Game(){
 
     const move = isAsc ? i : history.length -1 -i;
 
-    let description = move > 0 ? 'Ir al movimiento #' + move : 'Ir al movimiento al inicio del juego';
     
-    if (move === history.length -1){
-      description = 'Estas en el movimiento #' + move;
-      return (
-        <li key={move}>
-          <span>{description}</span>
-        </li>
-      )
+    let description;
+    if(move > 0) {
+      const coordChanged = findChangedCoord(history[move-1],history[move]);
+      if (move === history.length -1){
+        description = 'Estas en el movimiento #' + move +' ('+coordChanged.row +','+ coordChanged.col +")";
+        return (
+          <li key={move}>
+            <span>{description}</span>
+          </li>
+        )
+      } else {
+        description = 'Ir al movimiento #' + move + ' ('+coordChanged.row +','+ coordChanged.col +")";
+      }
     }
+    else {
+      description = 'Ir al movimiento al inicio del juego'
+    }
+
 
     return (
       <li key={move}>

@@ -20,3 +20,20 @@ export function calculateWinner(squares) {
   }
   return null;
 }
+
+
+export function findChangedIndex(prevSquares, currentSquares){
+  return currentSquares.findIndex((val,i) => val!==prevSquares[i])
+}
+
+export function findChangedCoord(prevSquares, currentSquares){
+  if(!prevSquares) return null;
+  return indexToCoord(currentSquares.findIndex((val,i) => val!==prevSquares[i]));
+}
+
+function indexToCoord(index){
+  return {
+    row: Math.floor(index/3),
+    col:index % 3
+  }
+}
