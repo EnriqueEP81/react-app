@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useState } from "react";
 
 
@@ -25,11 +26,17 @@ const Stories = () =>{
 
     console.log('Stories renders');
 
-    const [searchTerm, setSearchTerm] = useState('React');
+    const [searchTerm, setSearchTerm] = useState(localStorage.getItem('search') || 'React');
+
+    useEffect(() => {
+        localStorage.setItem('search', searchTerm),
+        [searchTerm]
+    });
 
     const handleSearch = (event) => {
         console.log("handle Search " + event.target.value);
         setSearchTerm(event.target.value);
+        //localStorage.setItem('search', event.target.value);
     }
 
     const searchedStories = stories.filter(story =>
@@ -39,7 +46,12 @@ const Stories = () =>{
     return (
         <>
           <h1>My stories</h1>
-          <Search onSearch = {handleSearch} search = {searchTerm}/>
+          {
+          //<Search onSearch = {handleSearch} search = {searchTerm}/>
+          }
+          <InputWithLabel  inputId='searchId' inputOnChange={handleSearch} inputType='text' inputValue={searchTerm}>
+            <strong>Search:</strong>
+          </InputWithLabel>
           <hr/>
           <List list={searchedStories}/>
         </>
@@ -47,44 +59,38 @@ const Stories = () =>{
 }
 
 
-const Search = (props) => {
-  console.log('Search renders');  
- 
-  const handleChange = (event) => {
-    props.onSearch(event);
-  }
 
-  return (
-    <>
-      <label htmlFor='search'>Search:</label>
-      <input id='search' type='text' value={props.search} onChange={handleChange}></input>
-      <p>Searching for <strong>{props.search}</strong></p>
-    </>
-
-  );
+const InputWithLabel = ({inputId,inputType,inputOnChange, inputValue, children}) => {
+    console.log('input with label renders')    ;
+    return(
+      <>
+        <label htmlFor = {inputId}>{children}</label>
+        <input id = {inputId} type = {inputType} onChange={inputOnChange} value={inputValue}></input>
+      </>
+    )
 }
 
 
-const List = (props) => {
+const List = ({list}) => {
     console.log('List renders');
     return (
       <ul>
-          {props.list.map((item) =>(
+          {list.map((item) =>(
               <Item key={item.objectID} elem={item}/>
           ))}
       </ul>
     );
 }
 
-const Item = (props) => {
+const Item = ({elem:{url, title, author, points, num_comments}}) => {
     return(
         <li>
             <span>
-                <a href={props.elem.url}>{props.elem.title} </a>
+                <a href={url}>{title} </a>
             </span>
-            <span>{props.elem.author} </span>
-            <span>{props.elem.points} </span>
-            <span>{props.elem.num_comments} </span>
+            <span>{author} </span>
+            <span>{points} </span>
+            <span>{num_comments} </span>
         </li>
     );
 }
